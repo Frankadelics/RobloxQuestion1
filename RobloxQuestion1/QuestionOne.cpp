@@ -29,10 +29,15 @@ int efficientJanitor(vector<float>& weight)
 			cout << "I made it here 2" << endl;
 			numTrips++;
 		}
+		else if (it == weight.end())
+		{
+			numTrips++;
+			break;
+		}
 		//Add the current bag with the future bag, if they are less than 3 then they can be taken together, numTrips++
 		else if (*it + *(it + 1) <= 3)
 		{
-			cout << "I made it here 3" << endl;
+			cout << "Iterator: " << *it << endl;
 			numTrips++;
 			it++;
 		}
@@ -51,7 +56,7 @@ int main()
 	vector<float> weightOfBags;
 	weightOfBags.push_back(1.01);
 	weightOfBags.push_back(1.01);
-	weightOfBags.push_back(1.5);
+	weightOfBags.push_back(1.01);
 	weightOfBags.push_back(2.0);
 	//weightOfBags.push_back(1.01);
 	//weightOfBags.push_back(1.01);
