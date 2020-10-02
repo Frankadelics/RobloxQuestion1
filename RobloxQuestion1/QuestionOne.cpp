@@ -5,45 +5,55 @@
 using namespace std;
 
 //To iterate across my vector of stored trashbag weights
-vector<float>::iterator it;
+vector<float>::iterator it1;
+vector<float>::iterator it2;
 
 int efficientJanitor(vector<float>& weight)
 {
 	int numTrips = 0;
-	float buffer = 0.0;
+	int saved = 0;
+	bool changed = false;
 	//Your code starts here
-
-	//One bag will always have one trip
+	
 	if (weight.size() == 1)
 	{
-		cout << "I made it here 1" << endl;
 		return 1;
 	}
-
 	sort(weight.begin(), weight.end());
-	for (it = weight.begin(); it != weight.end(); it++)
+	for (int i = 0; i < weight.size(); i++)
 	{
-		//If the bag is heavier than 2, no other combinations will work and it must be taken by itself
-		if (*it >= 2)
+		if (weight[i] != -1)
 		{
-			cout << "I made it here 2" << endl;
-			numTrips++;
-		}
-		else if (it == weight.end())
-		{
-			numTrips++;
-			break;
-		}
-		//Add the current bag with the future bag, if they are less than 3 then they can be taken together, numTrips++
-		else if (*it + *(it + 1) <= 3)
-		{
-			cout << "Iterator: " << *it << endl;
-			numTrips++;
-			it++;
-		}
+			if (weight[i] >= 2)
+			{
+				numTrips++;
+				weight[i] = -1;
+			}
 
-		
+			else
+			{
+				for (int j = i + 1; j < weight.size(); j++)
+				{
+					float sum = weight[i] + weight[j];
+					cout << "Sum: " << sum << " i: " << i << " j: " << j << endl;
+					if (sum <= 3 && weight[j] != -1)
+					{
+						saved = j;
+						changed = true;
+						cout << "Saved: " << j << endl;
+					}
+				}
+				weight[i] = -1;
+				if (changed)
+				{
+					weight[saved] = -1;
+					changed = false;
+				}
+				numTrips++;
+			}
+		}
 	}
+	
 
 	//Your code ends here
 	return numTrips;
@@ -56,8 +66,9 @@ int main()
 	vector<float> weightOfBags;
 	weightOfBags.push_back(1.01);
 	weightOfBags.push_back(1.01);
-	weightOfBags.push_back(1.01);
-	weightOfBags.push_back(2.0);
+	weightOfBags.push_back(1.99);
+	weightOfBags.push_back(1.99);
+
 	//weightOfBags.push_back(1.01);
 	//weightOfBags.push_back(1.01);
 	int numTrips = efficientJanitor(weightOfBags);
